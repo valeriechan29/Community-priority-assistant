@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Priority Assistant</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="polish.css">
+</head>
+<body>
+    <main id="homePage" class="page">
+        <div class="top-navigation">
+            <button class="my-priorities-button" onclick="showMyPrioritiesPage()">My Priorities</button>
+        </div>
+        <div class="main-container">
+            <div class="hero">
+                <div class="badge">Community Impact</div>
+                <h1>Community Priority Assistant</h1>
+                <p class="description">Discover volunteering opportunities, create meaningful community priorities and reflect on your impact.</p>
+            </div>
+            <div class="journey-grid">
+                <article class="journey-card"><div class="icon">🔎</div><h2>Find an Opportunity</h2><p>Browse Bristol and South West volunteering opportunities and find something that works for you.</p><button class="secondary-button" onclick="showOpportunityPage()">Browse Opportunities</button></article>
+                <article class="journey-card"><div class="icon">✨</div><h2>Create My Priority</h2><p>Turn your community involvement into a meaningful priority.</p><button class="secondary-button" onclick="showPriorityPage()">Create Priority</button></article>
+                <article class="journey-card"><div class="icon">💭</div><h2>Write My Reflection</h2><p>Capture your activities and outcomes and create a structured reflection.</p><button class="secondary-button" onclick="showReflectionPage()">Write Reflection</button></article>
+            </div>
+        </div>
+    </main>
+
+    <main id="opportunityPage" class="page hidden">
+        <div class="opportunity-browser">
+            <button class="back-button" onclick="showHomePage()">← Back to Home</button>
+            <div class="browser-heading"><div class="badge">Bristol &amp; South West</div><h1>Volunteer</h1><p>Browse current and featured volunteering opportunities and find something that suits you.</p></div>
+            <div class="search-area">
+                <div class="location-input-wrapper"><span>📍</span><input id="locationInput" type="text" value="Bristol" placeholder="Enter a location" oninput="applyFilters()"></div>
+                <div class="search-box"><input id="searchInput" type="text" placeholder="Search volunteer opportunities" oninput="applyFilters()"><button class="search-button" onclick="applyFilters()">Search</button></div>
+            </div>
+            <div class="filter-section">
+                <p class="filter-title">Filter opportunities</p>
+                <div class="filter-row"><span class="filter-label">Cause</span><button class="filter-chip active" data-filter="cause" data-value="all" onclick="selectFilter(this)">All</button><button class="filter-chip" data-filter="cause" data-value="environment" onclick="selectFilter(this)">Environment</button><button class="filter-chip" data-filter="cause" data-value="education" onclick="selectFilter(this)">Education</button><button class="filter-chip" data-filter="cause" data-value="community" onclick="selectFilter(this)">Community</button><button class="filter-chip" data-filter="cause" data-value="homelessness" onclick="selectFilter(this)">Homelessness</button></div>
+                <div class="filter-row"><span class="filter-label">Format</span><button class="filter-chip active" data-filter="format" data-value="all" onclick="selectFilter(this)">All</button><button class="filter-chip" data-filter="format" data-value="in-person" onclick="selectFilter(this)">In Person</button><button class="filter-chip" data-filter="format" data-value="virtual" onclick="selectFilter(this)">Virtual</button></div>
+                <div class="filter-row"><span class="filter-label">Commitment</span><button class="filter-chip active" data-filter="time" data-value="all" onclick="selectFilter(this)">All</button><button class="filter-chip" data-filter="time" data-value="short" onclick="selectFilter(this)">1–2 Hours</button><button class="filter-chip" data-filter="time" data-value="half-day" onclick="selectFilter(this)">Half Day</button><button class="filter-chip" data-filter="time" data-value="flexible" onclick="selectFilter(this)">Flexible</button></div>
+            </div>
+            <div class="opportunities-header"><div><h2>Opportunities</h2><p id="resultCount">Loading opportunities...</p></div><button class="clear-button" onclick="clearFilters()">Clear filters</button></div>
+            <div id="opportunitiesGrid" class="opportunities-grid"></div>
+            <div id="noResults" class="no-results hidden"><h3>No opportunities found</h3><p>Try changing your filters or search term.</p><button class="secondary-button" onclick="clearFilters()">Clear filters</button></div>
+        </div>
+    </main>
+
+    <main id="priorityPage" class="page hidden">
+        <div class="priority-container">
+            <button class="back-button" onclick="goBackFromPriority()">← Back</button>
+            <div class="priority-header"><div class="badge">Create My Priority</div><h1>Turn your community involvement into a meaningful priority</h1><p>Tell us how you would like to contribute. We'll help turn it into a clear, professional and measurable community priority.</p></div>
+            <div id="selectedOpportunityCard" class="selected-opportunity hidden"><div class="selected-label">Selected volunteering opportunity</div><h3 id="selectedOpportunityName"></h3><p id="selectedOpportunityDescription"></p><div class="selected-meta"><span id="selectedOpportunityLocation"></span><span id="selectedOpportunityFormat"></span><span id="selectedOpportunityTime"></span></div></div>
+            <div class="priority-form">
+                <div class="priority-field"><label for="priorityArea">What community area would you like to support?</label><p class="field-help">For example: education, young people, environment, homelessness or community support.</p><input id="priorityArea" type="text" placeholder="e.g. Education and young people"></div>
+                <div class="priority-field"><label for="priorityActivity">How would you like to contribute?</label><p class="field-help">Describe the volunteering activities, skills or support you would like to contribute.</p><textarea id="priorityActivity" rows="4" placeholder="e.g. Volunteer at university employability events and use my business analysis and presentation skills to support students."></textarea></div>
+                <div class="priority-field"><label for="priorityImpact">What impact would you like to make?</label><p class="field-help">Think about the difference you hope your contribution will make for the community or people you support.</p><textarea id="priorityImpact" rows="3" placeholder="e.g. Help students build confidence and strengthen their employability skills."></textarea></div>
+                <div class="priority-field"><label for="priorityMeasure">How will you know you've made progress?</label><p class="field-help">Add a realistic measure such as activities completed, volunteering hours, people supported or feedback received.</p><input id="priorityMeasure" type="text" placeholder="e.g. Support at least two activities and capture feedback from organisers"></div>
+                <div class="priority-generate"><div class="generate-wrapper"><button id="generatePriorityButton" class="primary-button generate-button" onclick="generatePriority()">✨ Generate My Priority</button><p id="priorityLoadingMessage" class="ai-loading-message hidden">Generating locally with AI. This may take a few seconds.</p></div></div>
+            </div>
+            <section id="generatedPrioritySection" class="generated-priority-section hidden"><div class="result-heading"><div class="badge">Suggested Priority</div><h2>Your community priority</h2><p>Review and edit the suggested priority before saving it.</p></div><div class="generated-card"><label for="generatedPriority">Priority statement</label><textarea id="generatedPriority" rows="7"></textarea><div class="generated-actions"><button class="secondary-button" onclick="savePriority(false)">Save Priority</button><button class="primary-button" onclick="savePriority(true)">Save &amp; Write Reflection →</button></div></div></section>
+        </div>
+    </main>
+
+    <main id="reflectionPage" class="page hidden">
+        <div class="priority-container">
+            <button class="back-button" onclick="showHomePage()">← Back to Home</button>
+            <div class="priority-header"><div class="badge">Write My Reflection</div><h1>Reflect on your community contribution</h1><p>Select a saved priority and tell us what happened. We'll help turn your experience into a clear and professional reflection.</p></div>
+            <div class="priority-form">
+                <div class="priority-field"><label for="reflectionPriority">1. Which priority would you like to reflect on?</label><p class="field-help">Select one of your previously saved community priorities.</p><select id="reflectionPriority" onchange="showSelectedPriority()"><option value="">Select a saved priority</option></select><div id="selectedReflectionPriority" class="reflection-priority-preview hidden"></div></div>
+                <div class="priority-field"><label for="reflectionActivity">2. What did you do?</label><p class="field-help">Describe the volunteering activities you completed and your contribution.</p><textarea id="reflectionActivity" rows="4" placeholder="e.g. Volunteered at two university business challenges and supported students during the activities."></textarea></div>
+                <div class="priority-field"><label for="reflectionImpact">3. What impact or outcomes did you see?</label><p class="field-help">Include relevant outcomes, feedback or evidence where available.</p><textarea id="reflectionImpact" rows="4" placeholder="e.g. Students engaged with the activities and I received positive feedback from organisers."></textarea></div>
+                <div class="priority-field"><label for="reflectionLearning">4. What did you learn or what could you improve?</label><p class="field-help">Consider what you learned, what went well and what you would build on next time.</p><textarea id="reflectionLearning" rows="4" placeholder="e.g. I developed my communication skills and would like to take greater ownership of future volunteering activities."></textarea></div>
+                <div class="priority-generate"><button id="generateReflectionButton" class="primary-button generate-button" onclick="generateReflection()">✨ Generate My Reflection</button></div>
+            </div>
+            <section id="generatedReflectionSection" class="generated-priority-section hidden"><div class="result-heading"><div class="badge">Suggested Reflection</div><h2>Your community reflection</h2><p>Review and personalise the reflection before saving it.</p></div><div class="generated-card"><label for="generatedReflection">Reflection</label><textarea id="generatedReflection" rows="10"></textarea><div class="generated-actions"><button class="primary-button" onclick="saveReflection()">Save Reflection</button></div></div></section>
+        </div>
+    </main>
+
+    <main id="myPrioritiesPage" class="page hidden">
+        <div class="opportunity-browser">
+            <button class="back-button" onclick="showHomePage()">← Back to Home</button>
+            <div class="priority-header"><div class="badge">My Community</div><h1>My Priorities</h1><p>View your saved community priorities and continue your reflections.</p></div>
+            <div id="myPrioritiesContainer" class="my-priorities-grid"></div>
+            <div id="noPrioritiesMessage" class="empty-priorities hidden"><p>You don't have any saved priorities yet.</p><button class="primary-button" onclick="showPriorityPage()">Create My First Priority</button></div>
+        </div>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
