@@ -37,16 +37,30 @@ Discover → Create Priority → Save → Participate → Reflect
 
 ```bash
 python -m venv venv
+```
 
 ### 2. Activate it on Windows
+
+```bash
 venv\Scripts\activate.bat
+```
 
 ### 3. Install dependencies
+
+```bash
 python -m pip install -r requirements.txt
+```
 
 ### 4. Start the application
+
+```bash
 python app.py
+```
 
 ### 5. Open the application
-Open:
+
+Open the following address in your browser:
+
 http://127.0.0.1:5000
+
+On first use, Microsoft Foundry Local may need to download the Phi-4 Mini model.
